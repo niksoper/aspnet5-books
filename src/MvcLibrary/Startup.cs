@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MvcLibrary.Models;
+using Serilog;
 
 namespace MvcLibrary
 {
@@ -14,7 +15,7 @@ namespace MvcLibrary
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
-
+            
             this.Configuration = builder.Build();
         }
 
@@ -31,6 +32,18 @@ namespace MvcLibrary
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug(LogLevel.Verbose);
+
+            var log = new Serilog.LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.RollingFile(
+                    pathFormat: env.MapPath("MvcLibrary-{Date}.log"), 
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {SourceContext} [{Level}] {Message}{NewLine}{Exception}")
+                .CreateLogger();
+
+            loggerFactory.AddSerilog(log);
+
             app.UseMvc();
         }
 
