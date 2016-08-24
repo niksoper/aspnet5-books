@@ -12,7 +12,7 @@ namespace MvcLibrary.Models
         public BookRepository()
         {
             this.books = new ConcurrentDictionary<string, Book>();
-            this.Add(new Book { Title = "RESTful API with MVC6", Author = "Nick Soper" });
+            this.Add(new Book { Title = "RESTful API with ASP.NET Core MVC 1.0", Author = "Nick Soper" });
         }
 
         public void Add(Book book)

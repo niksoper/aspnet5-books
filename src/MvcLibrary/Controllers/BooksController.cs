@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MvcLibrary.Models;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace MvcLibrary.Controllers
 {
     [Route("api/[controller]")]
-    public class BooksController : Controller
+    public class BooksController : ControllerBase
     {
         private readonly IBookRepository books;
         private readonly ILogger logger;
@@ -31,7 +31,7 @@ namespace MvcLibrary.Controllers
             var book = this.books.Find(id);
             if (book == null)
             {
-                return this.HttpNotFound();
+                return this.NotFound();
             }
 
             return this.Ok(book);
@@ -42,12 +42,12 @@ namespace MvcLibrary.Controllers
         {
             if (book == null)
             {
-                return this.HttpBadRequest();
+                return this.BadRequest();
             }
 
             this.books.Add(book);
 
-            this.logger.LogVerbose("Added {0} by {1}", book.Title, book.Author);
+            this.logger.LogTrace("Added {0} by {1}", book.Title, book.Author);
 
             return this.CreatedAtRoute("GetBook", new { id = book.Id }, book);
         }
@@ -57,18 +57,18 @@ namespace MvcLibrary.Controllers
         {
             if (book.Id != id)
             {
-                return this.HttpBadRequest();
+                return this.BadRequest();
             }
 
             var existingBook = this.books.Find(id);
             if (existingBook == null)
             {
-                return this.HttpNotFound();
+                return this.NotFound();
             }
 
             this.books.Update(book);
 
-            this.logger.LogVerbose(
+            this.logger.LogTrace(
                 "Updated {0} by {1} to {2} by {3}",
                 existingBook.Title,
                 existingBook.Author,
