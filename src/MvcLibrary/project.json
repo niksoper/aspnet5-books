@@ -6,7 +6,6 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Mvc": "1.0.0",
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.AspNetCore.Hosting.Server.Abstractions": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
