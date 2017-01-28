@@ -6,7 +6,7 @@ services:
 
     reverse-proxy:
         container_name: reverse-proxy
-        image: nginx
+        image: nginx:1.11.3
         ports:
          - "9090:8080"
         volumes:
